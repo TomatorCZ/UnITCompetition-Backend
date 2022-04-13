@@ -241,7 +241,8 @@ namespace BackendWebAPI.Controllers
                 Passed = 542,
                 Failed = 13,
                 NumberOfGroups = 60,
-                AverageRunTime = 53.6
+                AverageRunTime = 53.6,
+                PassedDiff = 0.05
             };
 
             return Ok(result);
