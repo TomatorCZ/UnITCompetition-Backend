@@ -1,7 +1,12 @@
-﻿namespace Shared.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Shared.Models
 {
     public class Group
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int HeadId { get; set; }
         public string Title { get; set; }

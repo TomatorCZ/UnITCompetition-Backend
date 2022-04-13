@@ -6,13 +6,51 @@ class Program
 {
     static void Main(string[] args)
     {
+        Console.ReadLine();
+        //parsing
         Parser parser = new Parser();
         var parsedFiles = parser.ParseFiles(args[1]);
-
-        using (var ctx = new CommonDbContext(null))
-        { 
         
+        //save
+        using (var ctx = new CommonDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<CommonDbContext>(), @"DataSource = C:\Users\husak\Hackathons\InITCompetition\UnITCompetition-Backend\BackendWebAPI\UnIT.db;"))
+        {
+            foreach (var item in parsedFiles)
+            {
+                int id = AddNewHead(item.Item1, ctx).Result;
+                foreach (var itemG in item.Item2)
+                {
+                    itemG.Item1.HeadId = id;
+                    int idGroup = AddNewGroup(itemG.Item1, ctx).Result;
+                    foreach (var itemT in itemG.Item2)
+                    {
+                        itemT.GroupId = idGroup;
+                        AddNewTest(itemT, ctx);
+                    }
+                }
+            }
         }
+    }
+
+    public static async Task<int> AddNewHead(Head head, CommonDbContext ctx)
+    {
+        var result = ctx.Heads.Add(head).Entity.Id;
+        await ctx.SaveChangesAsync();
+        return result;
+    }
+
+    public static async Task<int> AddNewTest(Test test, CommonDbContext ctx)
+    {
+        var result = ctx.Tests.Add(test).Entity.Id;
+        await ctx.SaveChangesAsync();
+        return result;
+    }
+
+    public static async Task<int> AddNewGroup(Group group, CommonDbContext ctx)
+    {
+        var result = ctx.Groups.Add(group).Entity.Id;
+        await ctx.SaveChangesAsync();
+
+        return result;
     }
 
     //public static Options ParseOptions(string[] args) 
@@ -44,7 +82,7 @@ class Program
 
     //public static void ShowUsage() 
     //{
-        
+
     //}
 
     //public enum SaveEnum { DB };
