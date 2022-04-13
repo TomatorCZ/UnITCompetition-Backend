@@ -8,7 +8,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ParserLib\ParserLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\PG24A\IL4_PG24A21510A00_FAIL_PART1_04a1dbd7-d657-4078-9df7-aff4f41152aa.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\PG24A\IL4_PG24A21510A00_PASS_PART1_c47d70cd-85ae-488f-a39e-04c3bd0c95dc.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

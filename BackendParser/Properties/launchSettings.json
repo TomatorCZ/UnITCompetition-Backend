@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BackendParser": {
+      "commandName": "Project",
+      "commandLineArgs": "program \"C:\\Users\\husak\\Hackathons\\InITCompetition\\UnITCompetition-Backend\\BackendParser\\Data\\PG24A\\\""
+    }
+  }
+}

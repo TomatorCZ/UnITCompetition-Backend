@@ -5,6 +5,7 @@
     {
         public int Id { get; set; }
         public int GroupId { get; set; }
+        public int TestId { get; set; }
         public string Title { get; set; }
         public bool Checked { get; set; }
         public string TestClass { get; set; }
@@ -13,7 +14,7 @@
         public int TestGroupSequenceNumber { get; set; }
         public ResultTestEnum Result { get; set; }
         public Operation Operations { get; set; }
-        public Dictionary<string, object> Config { get; set; }
+        public Dictionary<string, string> Config { get; set; }
         public IList<string> ErrorInfo { get; set; }
     }
 }
