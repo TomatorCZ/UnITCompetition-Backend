@@ -6,7 +6,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.ReadLine();
         //parsing
         Parser parser = new Parser();
         var parsedFiles = parser.ParseFiles(args[1]);
@@ -14,19 +13,24 @@ class Program
         //save
         using (var ctx = new CommonDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<CommonDbContext>(), @"DataSource = C:\Users\husak\Hackathons\InITCompetition\UnITCompetition-Backend\BackendWebAPI\UnIT.db;"))
         {
-            foreach (var item in parsedFiles)
+            int id = 0;
+            int idGroup = 0;
+            foreach (var item in parsedFiles.Take(10))
             {
-                int id = AddNewHead(item.Item1, ctx).Result;
+                Console.WriteLine(id);
+                AddNewHead(item.Item1, ctx).Wait();
                 foreach (var itemG in item.Item2)
                 {
                     itemG.Item1.HeadId = id;
-                    int idGroup = AddNewGroup(itemG.Item1, ctx).Result;
+                    AddNewGroup(itemG.Item1, ctx).Wait();
                     foreach (var itemT in itemG.Item2)
                     {
                         itemT.GroupId = idGroup;
                         AddNewTest(itemT, ctx);
                     }
+                    idGroup++;
                 }
+                id++;
             }
         }
     }

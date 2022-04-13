@@ -71,8 +71,8 @@ namespace ParserLib.XMLParser
             //result
             var resultTag = head.Element("result");
             result.Result_Value = resultTag.Attribute("value").Value == "FAIL" ? ResultTestEnum.FAIL : ResultTestEnum.PASS;
-            result.Result_FailTestName = resultTag.Attribute("fail-test-name").Value;
-            result.Result_FailGroupName = resultTag.Attribute("fail-group-name").Value;
+            result.Result_FailTestName = resultTag.Attribute("fail-test-name") == null ? "" : resultTag.Attribute("fail-test-name").Value;
+            result.Result_FailGroupName = resultTag.Attribute("fail-group-name")== null ? "" : resultTag.Attribute("fail-group-name").Value;
             //upload-state
             result.UploadState = head.Element("upload-state").Attribute("value").Value;
             //test-total-time
