@@ -42,5 +42,41 @@ namespace BackendWebAPI.Controllers
 
             return Ok(result);
         }
+        
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<AvgPassRateResponse>>> GetWeeklyPassRate()
+        {
+            //TODO query analisis analysis
+            //LIB.GETAVG(from, to)
+            
+            var result = new List<WeeklyPassRateResponse> {
+                new WeeklyPassRateResponse
+                {
+                    WeeklyPassRate = new double[] {  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 },
+                    Code = "N/A",
+                    Family = "IL4",
+                    HwVersion = "N/A",
+                    Name = "IL4 PG24A",
+                    SFCode = "PG24A",
+                    SFIdString = "PG24ANV21510A00",
+                    SFSN = "21510A00",
+                    SN = "N/A"
+                },
+                new WeeklyPassRateResponse
+                {
+                    WeeklyPassRate = new double[] {  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 }.Reverse().ToArray(),
+                    Code = "N/A",
+                    Family = "IL5",
+                    HwVersion = "N/A",
+                    Name = "IL5 PG24B",
+                    SFCode = "PG24B",
+                    SFIdString = "PG24BNV21510A00",
+                    SFSN = "21510B00",
+                    SN = "N/A"
+                },
+            };
+
+            return Ok(result);
+        }
     }
 }
