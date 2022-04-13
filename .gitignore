@@ -37,5 +37,3 @@ msbuild.wrn
 .vs/
 
 # databases
-
-*.db*
