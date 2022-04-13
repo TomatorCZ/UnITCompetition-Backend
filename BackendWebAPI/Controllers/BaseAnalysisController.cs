@@ -110,84 +110,78 @@ namespace BackendWebAPI.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<List<WeeklyPassRateResponse>>> GetWeeklyPassRate()
         {
-            DateTime to = DateTime.Now;
-            DateTime from = new DateTime(to.Ticks - TimeSpan.TicksPerDay); //week ago
+            DateTime to = Convert.ToDateTime("2022-03-01 00:39:50.8");//DateTime.Now;
+            DateTime from = new DateTime(to.Ticks - (TimeSpan.TicksPerDay * 7)); //week ago
+            //for mocking pass rate
+            Random r = new Random();
+            var wekkGrouppedByHead = _context.Heads
+               .Where(x => x.TimeStamp >= from)
+               .Where(x => x.TimeStamp <= to)
+               .GroupBy(x => x.Product_Name)
+               .Select(x => x.ToList())
+               .ToList();
 
             var result = new List<WeeklyPassRateResponse>();
 
-
-            //for each day
-            for (int i = 0; i < 7; i++)
+            //iterate over all heads
+            foreach (var prodGroup in wekkGrouppedByHead)
             {
+                double[] passes = new double[7];
 
-                var prodGroups = _context.Heads
-                               .Where(x => x.TimeStamp >= from)
-                               .Where(x => x.TimeStamp <= to)
-                               .GroupBy(x => x.Product_SFIdString)
-                               .Select(x => x.ToList())
-                               .ToList();
+                from = to;
+                //for each day
+                for (int i = 1; i <= 7; i++)
+                {
+                    to = from;
+                    from = new DateTime(from.Ticks - TimeSpan.TicksPerDay * i);
 
-                //foreach (var prodGroup in prodGroups)
-                //{
-                //    int passCounter = 0;
-                //    int totalCounter = 0;
-                //    foreach (var product in prodGroup)
-                //    {
-                //        totalCounter++;
+                    var headsInDay = prodGroup
+                        .Where(x => x.TimeStamp >= from)
+                        .Where(x => x.TimeStamp <= to)
+                        .ToList();
+                    if (headsInDay.Count == 0)
+                        continue;
 
-                //        if (product.Result_Value == ResultTestEnum.PASS)
-                //            passCounter++;
-                //    }
-                //    var exProduct = prodGroup.First();
+                    int passCounter = 0;
+                    int totalCounter = 0;
+                    foreach (var product in headsInDay)
+                    {
+                        totalCounter++;
 
-                //    var prodResult = new WeeklyPassRateResponse()
-                //    {
-                //        AvgPassRate = passCounter / totalCounter,
-                //        Code = exProduct.Product_Code,
-                //        Family = exProduct.Product_Family,
-                //        HwVersion = exProduct.Product_HwVersion,
-                //        Name = exProduct.Product_Name,
-                //        SFCode = exProduct.Product_SFCode,
-                //        SFIdString = exProduct.Product_SFIdString,
-                //        SFSN = exProduct.Product_SFSN,
-                //        SN = exProduct.Product_SN
-                //    };
+                        if (product.Result_Value == ResultTestEnum.PASS)
+                            passCounter++;
+                    }
 
-                //    result.Add(prodResult);
-                //}
+                    //for mocking pass rates
+                    double rDouble = r.NextDouble();
+                    passes[i - 1] = Math.Min(rDouble + 0.5, 1.0);
+
+                    //passes[i - 1] = (double)passCounter / totalCounter;
+
+                    //var exProduct = prodGroup.First();
+                }
+
+                var exProduct = prodGroup.First();
+
+                var prodResult = new WeeklyPassRateResponse()
+                {
+                    WeeklyPassRate = passes,
+                    Code = exProduct.Product_Code,
+                    Family = exProduct.Product_Family,
+                    HwVersion = exProduct.Product_HwVersion,
+                    Name = exProduct.Product_Name,
+                    SFCode = exProduct.Product_SFCode,
+                    SFIdString = exProduct.Product_SFIdString,
+                    SFSN = exProduct.Product_SFSN,
+                    SN = exProduct.Product_SN
+                };
+
+                result.Add(prodResult);
+
             }
-
-            //var result = new List<WeeklyPassRateResponse>();
-            //foreach (var prodGroup in prodGroups)
-            //{
-            //    int passCounter = 0;
-            //    int totalCounter = 0;
-            //    foreach (var product in prodGroup)
-            //    {
-            //        totalCounter++;
-
-            //        if (product.Result_Value == ResultTestEnum.PASS)
-            //            passCounter++;
-            //    }
-            //    var exProduct = prodGroup.First();
-
-            //    var prodResult = new WeeklyPassRateResponse()
-            //    {
-            //        AvgPassRate = passCounter / totalCounter,
-            //        Code = exProduct.Product_Code,
-            //        Family = exProduct.Product_Family,
-            //        HwVersion = exProduct.Product_HwVersion,
-            //        Name = exProduct.Product_Name,
-            //        SFCode = exProduct.Product_SFCode,
-            //        SFIdString = exProduct.Product_SFIdString,
-            //        SFSN = exProduct.Product_SFSN,
-            //        SN = exProduct.Product_SN
-            //    };
-
-            //    result.Add(prodResult);
-            //}
-
             return Ok(result);
+
+
 
             //var result = new List<WeeklyPassRateResponse> {
             //    new WeeklyPassRateResponse
