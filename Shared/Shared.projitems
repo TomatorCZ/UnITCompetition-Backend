@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CommonDbContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AllertResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\AvgPassRateResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Group.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Head.cs" />
