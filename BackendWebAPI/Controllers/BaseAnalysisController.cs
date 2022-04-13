@@ -282,14 +282,28 @@ namespace BackendWebAPI.Controllers
             {
                 ProductName = "IL4 PG24A",
                 Severenity = 1,
-                Reason = "Tests duration are slowed by 25% in this week."
+                Reason = "Tests duration are slowed by 26.3 % in the last 7 days."
+            });
+
+            result.Add(new AllertResponse()
+            {
+                ProductName = "IL4 PG24C",
+                Severenity = 2,
+                Reason = "Tests failures increased by 33.1 % in the last 7 days."
             });
 
             result.Add(new AllertResponse()
             {
                 ProductName = "IL4 PG24D",
-                Severenity = 2,
-                Reason = "Tests failures increased by 30 % in this week."
+                Severenity = 1,
+                Reason = "Tests failures increased by 21.2 % in the last 7 days."
+            });
+
+            result.Add(new AllertResponse()
+            {
+                ProductName = "IL4 PG24E",
+                Severenity = 1,
+                Reason = "Tests failures increased by 26 % in the last 7 days."
             });
 
             return Ok(result);
