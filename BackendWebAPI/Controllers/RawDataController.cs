@@ -37,24 +37,33 @@ namespace BackendWebAPI.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task AddNewHead([FromBody] Head head)
+        public async Task<ActionResult<int>> AddNewHead([FromBody] Head head)
         {
             _context.Heads.Add(head);
+            int _id = (await _context.Heads.FindAsync(head))!.Id;
             await _context.SaveChangesAsync();
+
+            return Ok(_id);
         }
 
         [HttpPost("[action]")]
-        public async Task AddNewTest([FromBody] Test test)
+        public async Task<ActionResult<int>> AddNewTest([FromBody] Test test)
         {
             _context.Tests.Add(test);
+            int _id = (await _context.Tests.FindAsync(test))!.Id;
             await _context.SaveChangesAsync();
+
+            return Ok(_id);
         }
 
         [HttpPost("[action]")]
-        public async Task AddNewGroup([FromBody] Group group)
+        public async Task<ActionResult<int>> AddNewGroup([FromBody] Group group)
         {
             _context.Groups.Add(group);
+            int _id = (await _context.Groups.FindAsync(group))!.Id;
             await _context.SaveChangesAsync();
+
+            return Ok(_id);
         }
     }
 }
