@@ -113,7 +113,7 @@ namespace BackendWebAPI.Controllers
             DateTime to = Convert.ToDateTime("2022-03-01 00:39:50.8");//DateTime.Now;
             DateTime from = new DateTime(to.Ticks - (TimeSpan.TicksPerDay * 7)); //week ago
             //for mocking pass rate
-            Random r = new Random();
+            Random r = new Random(42);
             var wekkGrouppedByHead = _context.Heads
                .Where(x => x.TimeStamp >= from)
                .Where(x => x.TimeStamp <= to)
@@ -139,8 +139,8 @@ namespace BackendWebAPI.Controllers
                         .Where(x => x.TimeStamp >= from)
                         .Where(x => x.TimeStamp <= to)
                         .ToList();
-                    if (headsInDay.Count == 0)
-                        continue;
+                    //if (headsInDay.Count == 0)
+                    //    continue;
 
                     int passCounter = 0;
                     int totalCounter = 0;
@@ -154,11 +154,10 @@ namespace BackendWebAPI.Controllers
 
                     //for mocking pass rates
                     double rDouble = r.NextDouble();
-                    passes[i - 1] = Math.Min(rDouble + 0.5, 1.0);
+                    passes[i - 1] = Math.Min(rDouble + 0.3, 1.0);
 
                     //passes[i - 1] = (double)passCounter / totalCounter;
 
-                    //var exProduct = prodGroup.First();
                 }
 
                 var exProduct = prodGroup.First();
@@ -244,7 +243,7 @@ namespace BackendWebAPI.Controllers
 
             return Ok(result);
         }
-        
+
         [HttpGet("[action]")]
         public async Task<ActionResult<List<WeeklyStatsResponse>>> GetWeeklyStats()
         {
