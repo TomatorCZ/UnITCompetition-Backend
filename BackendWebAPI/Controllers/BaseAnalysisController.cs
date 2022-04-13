@@ -154,5 +154,22 @@ namespace BackendWebAPI.Controllers
 
             return Ok(result);
         }
+        
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<WeeklyStatsResponse>>> GetWeeklyStats()
+        {
+            //TODO query analisis analysis
+            //LIB.GETAVG(from, to)
+
+            var result = new WeeklyStatsResponse
+            {
+                Passed = 542,
+                Failed = 13,
+                NumberOfGroups = 60,
+                AverageRunTime = 53.6
+            };
+
+            return Ok(result);
+        }
     }
 }
