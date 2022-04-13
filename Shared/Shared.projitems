@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Test.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\TestDurationResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\WeeklyPassRateResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\WeeklyStatsResponse.cs" />
     <Compile Include="..\Shared\Models\OperationInfo.cs" />
   </ItemGroup>
 </Project>

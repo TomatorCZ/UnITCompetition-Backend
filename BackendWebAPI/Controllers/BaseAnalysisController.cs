@@ -29,10 +29,9 @@ namespace BackendWebAPI.Controllers
             var prodGroups = _context.Heads
                 .Where(x => x.TimeStamp >= from)
                 .Where(x => x.TimeStamp <= to)
-                .GroupBy(x => x.Product_SFIdString)
+                .GroupBy(x => x.Product_Name)
                 .Select(x => x.ToList())
                 .ToList();
-
 
 
             var result = new List<AvgPassRateResponse>();
@@ -51,7 +50,7 @@ namespace BackendWebAPI.Controllers
 
                 var prodResult = new AvgPassRateResponse()
                 {
-                    AvgPassRate = passCounter / totalCounter,
+                    AvgPassRate = (double)passCounter / totalCounter,
                     Code = exProduct.Product_Code,
                     Family = exProduct.Product_Family,
                     HwVersion = exProduct.Product_HwVersion,
@@ -74,7 +73,7 @@ namespace BackendWebAPI.Controllers
             var prodGroups = _context.Heads
                .Where(x => x.TimeStamp >= payload.from)
                .Where(x => x.TimeStamp <= payload.to)
-               .GroupBy(x => x.Product_SFIdString)
+               .GroupBy(x => x.Product_Name)
                .Select(x => x.ToList())
                .ToList();
 
@@ -91,7 +90,7 @@ namespace BackendWebAPI.Controllers
 
                 var prodResult = new TestDurationResponse()
                 {
-                    TestDuration = totalCounter / prodGroup.Count,
+                    TestDuration = (double)totalCounter / prodGroup.Count,
                     Code = exProduct.Product_Code,
                     Family = exProduct.Product_Family,
                     HwVersion = exProduct.Product_HwVersion,
@@ -111,35 +110,111 @@ namespace BackendWebAPI.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<List<WeeklyPassRateResponse>>> GetWeeklyPassRate()
         {
-            //TODO query analisis analysis
-            //LIB.GETAVG(from, to)
+            DateTime to = DateTime.Now;
+            DateTime from = new DateTime(to.Ticks - TimeSpan.TicksPerDay); //week ago
 
-            var result = new List<WeeklyPassRateResponse> {
-                new WeeklyPassRateResponse
-                {
-                    WeeklyPassRate = new double[] {  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 },
-                    Code = "N/A",
-                    Family = "IL4",
-                    HwVersion = "N/A",
-                    Name = "IL4 PG24A",
-                    SFCode = "PG24A",
-                    SFIdString = "PG24ANV21510A00",
-                    SFSN = "21510A00",
-                    SN = "N/A"
-                },
-                new WeeklyPassRateResponse
-                {
-                    WeeklyPassRate = new double[] {  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 }.Reverse().ToArray(),
-                    Code = "N/A",
-                    Family = "IL5",
-                    HwVersion = "N/A",
-                    Name = "IL5 PG24B",
-                    SFCode = "PG24B",
-                    SFIdString = "PG24BNV21510A00",
-                    SFSN = "21510B00",
-                    SN = "N/A"
-                },
-            };
+            var result = new List<WeeklyPassRateResponse>();
+
+
+            //for each day
+            for (int i = 0; i < 7; i++)
+            {
+
+                var prodGroups = _context.Heads
+                               .Where(x => x.TimeStamp >= from)
+                               .Where(x => x.TimeStamp <= to)
+                               .GroupBy(x => x.Product_SFIdString)
+                               .Select(x => x.ToList())
+                               .ToList();
+
+                //foreach (var prodGroup in prodGroups)
+                //{
+                //    int passCounter = 0;
+                //    int totalCounter = 0;
+                //    foreach (var product in prodGroup)
+                //    {
+                //        totalCounter++;
+
+                //        if (product.Result_Value == ResultTestEnum.PASS)
+                //            passCounter++;
+                //    }
+                //    var exProduct = prodGroup.First();
+
+                //    var prodResult = new WeeklyPassRateResponse()
+                //    {
+                //        AvgPassRate = passCounter / totalCounter,
+                //        Code = exProduct.Product_Code,
+                //        Family = exProduct.Product_Family,
+                //        HwVersion = exProduct.Product_HwVersion,
+                //        Name = exProduct.Product_Name,
+                //        SFCode = exProduct.Product_SFCode,
+                //        SFIdString = exProduct.Product_SFIdString,
+                //        SFSN = exProduct.Product_SFSN,
+                //        SN = exProduct.Product_SN
+                //    };
+
+                //    result.Add(prodResult);
+                //}
+            }
+
+            //var result = new List<WeeklyPassRateResponse>();
+            //foreach (var prodGroup in prodGroups)
+            //{
+            //    int passCounter = 0;
+            //    int totalCounter = 0;
+            //    foreach (var product in prodGroup)
+            //    {
+            //        totalCounter++;
+
+            //        if (product.Result_Value == ResultTestEnum.PASS)
+            //            passCounter++;
+            //    }
+            //    var exProduct = prodGroup.First();
+
+            //    var prodResult = new WeeklyPassRateResponse()
+            //    {
+            //        AvgPassRate = passCounter / totalCounter,
+            //        Code = exProduct.Product_Code,
+            //        Family = exProduct.Product_Family,
+            //        HwVersion = exProduct.Product_HwVersion,
+            //        Name = exProduct.Product_Name,
+            //        SFCode = exProduct.Product_SFCode,
+            //        SFIdString = exProduct.Product_SFIdString,
+            //        SFSN = exProduct.Product_SFSN,
+            //        SN = exProduct.Product_SN
+            //    };
+
+            //    result.Add(prodResult);
+            //}
+
+            return Ok(result);
+
+            //var result = new List<WeeklyPassRateResponse> {
+            //    new WeeklyPassRateResponse
+            //    {
+            //        WeeklyPassRate = new double[] {  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 },
+            //        Code = "N/A",
+            //        Family = "IL4",
+            //        HwVersion = "N/A",
+            //        Name = "IL4 PG24A",
+            //        SFCode = "PG24A",
+            //        SFIdString = "PG24ANV21510A00",
+            //        SFSN = "21510A00",
+            //        SN = "N/A"
+            //    },
+            //    new WeeklyPassRateResponse
+            //    {
+            //        WeeklyPassRate = new double[] {  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 }.Reverse().ToArray(),
+            //        Code = "N/A",
+            //        Family = "IL5",
+            //        HwVersion = "N/A",
+            //        Name = "IL5 PG24B",
+            //        SFCode = "PG24B",
+            //        SFIdString = "PG24BNV21510A00",
+            //        SFSN = "21510B00",
+            //        SN = "N/A"
+            //    },
+            //};
 
             return Ok(result);
         }
@@ -172,6 +247,23 @@ namespace BackendWebAPI.Controllers
                 Severenity = 2,
                 Reason = "Tests failures increased by 30 % in this week."
             });
+
+            return Ok(result);
+        }
+        
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<WeeklyStatsResponse>>> GetWeeklyStats()
+        {
+            //TODO query analisis analysis
+            //LIB.GETAVG(from, to)
+
+            var result = new WeeklyStatsResponse
+            {
+                Passed = 542,
+                Failed = 13,
+                NumberOfGroups = 60,
+                AverageRunTime = 53.6
+            };
 
             return Ok(result);
         }
