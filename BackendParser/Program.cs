@@ -1,6 +1,6 @@
 ﻿using ParserLib.XMLParser;
-using ParserLib;
 using Shared.Models;
+using System.Diagnostics;
 
 class Program
 {
@@ -9,7 +9,10 @@ class Program
         //parsing
         Parser parser = new Parser();
         var parsedFiles = parser.ParseFiles(args[1]);
-        
+
+        Stopwatch sw = new Stopwatch();
+
+        sw.Start();
         //save
         using (var ctx = new CommonDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<CommonDbContext>(), @"DataSource = C:\Users\husak\Hackathons\InITCompetition\UnITCompetition-Backend\BackendWebAPI\UnIT.db;"))
         {
@@ -29,6 +32,9 @@ class Program
                 }
             }
         }
+
+        sw.Stop();
+        Console.WriteLine(sw.ElapsedMilliseconds);
     }
 
     public static async Task<int> AddNewHead(Head head, CommonDbContext ctx)
