@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CommonDbContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AllertResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\AvgPassRateResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Group.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Head.cs" />
@@ -18,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Test.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\TestDurationResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\WeeklyPassRateResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\WeeklyStatsResponse.cs" />
     <Compile Include="..\Shared\Models\OperationInfo.cs" />
   </ItemGroup>
 </Project>
