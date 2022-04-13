@@ -12,16 +12,21 @@ namespace Shared.Models
         public DbSet<Head> Heads { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Test> Tests { get; set; }
-
+        public string _connectionString {get;set;}
 
         public CommonDbContext(DbContextOptions<CommonDbContext> options) : base(options) { }
+
+        public CommonDbContext(DbContextOptions<CommonDbContext> options, string connectionString) : base(options) 
+        {
+            _connectionString = connectionString;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite(@"DataSource = UnIT.db;");
+                optionsBuilder.UseSqlite(_connectionString == null ? @"DataSource = UnIT.db;" : _connectionString);
             }
         }
 
@@ -38,7 +43,6 @@ namespace Shared.Models
                 });
             modelBuilder
                 .Entity<Head>()
-                .HasNoKey()
                 .ToTable("Heads");
 
             modelBuilder
