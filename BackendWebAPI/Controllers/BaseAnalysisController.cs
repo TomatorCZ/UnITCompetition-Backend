@@ -68,18 +68,12 @@ namespace BackendWebAPI.Controllers
             return Ok(result);
         }
 
-        public class PayloadDuration
-        { 
-            public DateTime From { get; set; }
-            public DateTime To { get; set; }
-        }
-
         [HttpPost("[action]")]
-        public async Task<ActionResult<List<TestDurationResponse>>> GetTestDurations([FromBody] PayloadDuration payload)
+        public async Task<ActionResult<List<TestDurationResponse>>> GetTestDurations([FromBody] FromToRequest payload)
         {
             var prodGroups = _context.Heads
-               .Where(x => x.TimeStamp >= payload.From)
-               .Where(x => x.TimeStamp <= payload.To)
+               .Where(x => x.TimeStamp >= payload.from)
+               .Where(x => x.TimeStamp <= payload.to)
                .GroupBy(x => x.Product_SFIdString)
                .Select(x => x.ToList())
                .ToList();
