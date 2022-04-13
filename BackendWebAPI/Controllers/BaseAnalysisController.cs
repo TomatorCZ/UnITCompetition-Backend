@@ -78,35 +78,32 @@ namespace BackendWebAPI.Controllers
                .Select(x => x.ToList())
                .ToList();
 
-
-            var result = new List<TestDurationResponse> {
-                new TestDurationResponse
+            var result = new List<TestDurationResponse>();
+            foreach (var prodGroup in prodGroups)
+            {
+                float totalCounter = 0;
+                foreach (var product in prodGroup)
                 {
-                    TestDuration = 32.4,
-                    Code = "N/A",
-                    Family = "IL4",
-                    HwVersion = "N/A",
-                    Name = "IL4 PG24A",
-                    SFCode = "PG24A",
-                    SFIdString = "PG24ANV21510A00",
-                    SFSN = "21510A00",
-                    SN = "N/A"
-                },
-                new TestDurationResponse
-                {
-                    TestDuration = 15.3,
-                    Code = "N/A",
-                    Family = "IL5",
-                    HwVersion = "N/A",
-                    Name = "IL5 PG24B",
-                    SFCode = "PG24B",
-                    SFIdString = "PG24BNV21510A00",
-                    SFSN = "21510B00",
-                    SN = "N/A"
-                },
-            };
+                    totalCounter += product.TestTotalTime;
+                }
 
-            result = result.OrderBy(x => x.TestDuration).ToList();
+                var exProduct = prodGroup.First();
+
+                var prodResult = new TestDurationResponse()
+                {
+                    TestDuration = totalCounter / prodGroup.Count,
+                    Code = exProduct.Product_Code,
+                    Family = exProduct.Product_Family,
+                    HwVersion = exProduct.Product_HwVersion,
+                    Name = exProduct.Product_Name,
+                    SFCode = exProduct.Product_SFCode,
+                    SFIdString = exProduct.Product_SFIdString,
+                    SFSN = exProduct.Product_SFSN,
+                    SN = exProduct.Product_SN
+                };
+
+                result.Add(prodResult);
+            }
 
             return Ok(result);
         }
