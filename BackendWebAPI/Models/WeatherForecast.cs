@@ -1,4 +1,4 @@
-namespace BackendWebAPI
+namespace BackendWebAPI.Models
 {
     public class WeatherForecast
     {

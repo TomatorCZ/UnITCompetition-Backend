@@ -3,15 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserLib", "ParserLib\ParserLib.csproj", "{0A5A548C-59E5-4BA5-9BB1-B5E14A9A746A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParserLib", "ParserLib\ParserLib.csproj", "{0A5A548C-59E5-4BA5-9BB1-B5E14A9A746A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalysisLib", "AnalysisLib\AnalysisLib.csproj", "{8CFAB826-0B65-4125-ABE4-D02C95D4480A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnalysisLib", "AnalysisLib\AnalysisLib.csproj", "{8CFAB826-0B65-4125-ABE4-D02C95D4480A}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{B7B077E1-8304-48D2-A2BA-D2F7300924CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendWebAPI", "BackendWebAPI\BackendWebAPI.csproj", "{17EDB94E-72C2-4689-8CDC-EB71F2751EC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendWebAPI", "BackendWebAPI\BackendWebAPI.csproj", "{17EDB94E-72C2-4689-8CDC-EB71F2751EC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendParser", "BackendParser\BackendParser.csproj", "{842933D2-4ED7-4004-B154-3138FB041F4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendParser", "BackendParser\BackendParser.csproj", "{842933D2-4ED7-4004-B154-3138FB041F4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{706842B5-E806-4486-B28E-D8BA1F1D107B}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
