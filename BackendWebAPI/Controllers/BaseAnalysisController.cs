@@ -215,12 +215,66 @@ namespace BackendWebAPI.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<List<AvgPassRateResponse>>> GetMergedWeeklyPassRate()
         {
-            //TODO query analisis analysis
-            //LIB.GETAVG(from, to)
+            DateTime to = Convert.ToDateTime("2022-03-01 00:39:50.8");//DateTime.Now;
+            DateTime from = new DateTime(to.Ticks - (TimeSpan.TicksPerDay * 7)); //week ago
+            //for mocking pass rate
+            Random r = new Random(43);
+            var wekkGrouppedByHead = _context.Heads
+               .Where(x => x.TimeStamp >= from)
+               .Where(x => x.TimeStamp <= to)
+               .GroupBy(x => x.Product_Name)
+               .Select(x => x.ToList())
+               .ToList();
 
-            var result = new double[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 };
+            var result = new List<WeeklyPassRateResponse>();
 
-            return Ok(result);
+            double[] passes = new double[7];
+            for (int i = 1; i <= 7; i++)
+            {
+                from = to;
+                //iterate over all heads
+                foreach (var prodGroup in wekkGrouppedByHead)
+                {
+
+                    //for each day
+
+                    to = from;
+                    from = new DateTime(from.Ticks - TimeSpan.TicksPerDay * i);
+
+                    var headsInDay = prodGroup
+                        .Where(x => x.TimeStamp >= from)
+                        .Where(x => x.TimeStamp <= to)
+                        .ToList();
+                    //if (headsInDay.Count == 0)
+                    //    continue;
+
+                    int passCounter = 0;
+                    int totalCounter = 0;
+                    foreach (var product in headsInDay)
+                    {
+                        totalCounter++;
+
+                        if (product.Result_Value == ResultTestEnum.PASS)
+                            passCounter++;
+                    }
+
+
+
+
+                }
+                //passes[i - 1] = (double)passCounter / totalCounter;
+
+
+                //for mocking pass rates
+                double rDouble = r.NextDouble();
+                passes[i - 1] = Math.Min(rDouble + 0.3, 1.0);
+            }
+            return Ok(passes);
+
+
+            //var result = new double[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 };
+
+            //return Ok(result);
         }
 
         [HttpGet("[action]")]
