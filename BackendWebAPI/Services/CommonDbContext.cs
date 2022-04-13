@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using BackendWebAPI.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Shared.Models;
@@ -13,13 +14,24 @@ namespace BackendWebAPI.Services
         public DbSet<Group> Groups { get; set; }
         public DbSet<Test> Tests { get; set; }
 
+        public DbSet<WeatherForecast> Weather { get; set; }
 
         public CommonDbContext(DbContextOptions<CommonDbContext> options) : base(options)
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite(@"DataSource = UnIT.db;");
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder
                 .Entity<Head>(e =>
                 {
@@ -28,6 +40,10 @@ namespace BackendWebAPI.Services
                         x => JsonConvert.DeserializeObject<List<Tuple<string, string>>>(x) //convert FROM a json string
                     );
                 });
+            modelBuilder
+                .Entity<Head>()
+                .HasNoKey()
+                .ToTable("Heads");
 
             modelBuilder
                 .Entity<Group>();
