@@ -1,6 +1,6 @@
 ﻿namespace Shared.Models
 {
-    public enum ResultTestEnum { FAIL, PASS};
+    public enum ResultTestEnum { FAIL, PASS };
     public class Test
     {
         public int Id { get; set; }
@@ -12,8 +12,8 @@
         public int TestSequenceNumber { get; set; }
         public int TestGroupSequenceNumber { get; set; }
         public ResultTestEnum Result { get; set; }
-        public Operation Operations { get; set; }
-        public Dictionary<string, object> Config { get; set; }
-        public IList<string> ErrorInfo { get; set; }
+        public Operation Operations { get; set; } //is JSON
+        public Dictionary<string, string> Config { get; set; } //is JSON
+        public List<string> ErrorInfo { get; set; } //is JSON
     }
 }
