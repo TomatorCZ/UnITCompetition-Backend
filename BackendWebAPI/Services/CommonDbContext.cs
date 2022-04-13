@@ -1,5 +1,4 @@
-﻿using BackendWebAPI.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Shared.Models;
@@ -14,11 +13,8 @@ namespace BackendWebAPI.Services
         public DbSet<Group> Groups { get; set; }
         public DbSet<Test> Tests { get; set; }
 
-        public DbSet<WeatherForecast> Weather { get; set; }
 
-        public CommonDbContext(DbContextOptions<CommonDbContext> options) : base(options)
-        {
-        }
+        public CommonDbContext(DbContextOptions<CommonDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
