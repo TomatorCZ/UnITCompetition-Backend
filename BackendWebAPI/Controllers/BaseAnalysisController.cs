@@ -179,9 +179,6 @@ namespace BackendWebAPI.Controllers
 
             }
             return Ok(result);
-
-
-
             //var result = new List<WeeklyPassRateResponse> {
             //    new WeeklyPassRateResponse
             //    {
@@ -306,11 +303,11 @@ namespace BackendWebAPI.Controllers
 
             var result = new WeeklyStatsResponse
             {
-                Passed = 542,
+                Passed = 48,
                 Failed = 13,
-                NumberOfGroups = 60,
-                AverageRunTime = 53.6,
-                PassedDiff = 0.05
+                NumberOfGroups = 12,
+                AverageRunTime = 398.2,
+                PassedDiff = 0.058
             };
 
             return Ok(result);
