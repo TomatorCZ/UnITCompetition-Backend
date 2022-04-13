@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Shared.Models;
 
-namespace BackendWebAPI.Services
+namespace Shared.Models
 {
     public class CommonDbContext : IdentityDbContext
     {
