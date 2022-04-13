@@ -18,7 +18,7 @@ namespace BackendWebAPI.Services
 
                 // Database
                 .AddDbContext<CommonDbContext>(options =>
-                    options.UseSqlite($"Data Source=UnIT.db"))
+                    options.UseSqlite(@"DataSource = UnIT.db;"))
 
                 // Singletons
                 .AddSingleton<ExceptionResolver>()
