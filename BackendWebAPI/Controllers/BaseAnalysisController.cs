@@ -8,23 +8,30 @@ namespace BackendWebAPI.Controllers
     {
         private CommonDbContext _context;
 
+        public class FromToRequest
+        {
+            public DateTime from { get; set; }
+            public DateTime to { get; set; }
+        }
+
+
         public BaseAnalysisController(CommonDbContext context)
         {
             _context = context;
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<List<AvgPassRateResponse>>> GetAvgPassRate([FromBody] DateTime from, [FromBody] DateTime to)
+        public async Task<ActionResult<List<AvgPassRateResponse>>> GetAvgPassRate([FromBody] FromToRequest req)
         {
+            DateTime from = req.from;
+            DateTime to = req.to;
+
             var prodGroups = _context.Heads
                 .Where(x => x.TimeStamp >= from)
                 .Where(x => x.TimeStamp <= to)
                 .GroupBy(x => x.Product_SFIdString)
                 .Select(x => x.ToList())
                 .ToList();
-            //.ToList();
-            //(key, g) => new { ProductId = key, Heads = g.ToList() }); ;
-            //.DistinctBy(x => x.Product_SFIdString)
 
 
 
@@ -57,36 +64,6 @@ namespace BackendWebAPI.Controllers
 
                 result.Add(prodResult);
             }
-
-
-
-
-            //var result = new List<AvgPassRateResponse> {
-            //    new AvgPassRateResponse
-            //    {
-            //        AvgPassRate = 0.8,
-            //        Code = "N/A",
-            //        Family = "IL4",
-            //        HwVersion = "N/A",
-            //        Name = "IL4 PG24A",
-            //        SFCode = "PG24A",
-            //        SFIdString = "PG24ANV21510A00",
-            //        SFSN = "21510A00",
-            //        SN = "N/A"
-            //    },
-            //    new AvgPassRateResponse
-            //    {
-            //        AvgPassRate = 0.2,
-            //        Code = "N/A",
-            //        Family = "IL5",
-            //        HwVersion = "N/A",
-            //        Name = "IL5 PG24B",
-            //        SFCode = "PG24B",
-            //        SFIdString = "PG24BNV21510A00",
-            //        SFSN = "21510B00",
-            //        SN = "N/A"
-            //    },
-            //};
 
             return Ok(result);
         }
@@ -139,7 +116,7 @@ namespace BackendWebAPI.Controllers
 
             return Ok(result);
         }
-        
+
         [HttpGet("[action]")]
         public async Task<ActionResult<List<WeeklyPassRateResponse>>> GetWeeklyPassRate()
         {
@@ -172,17 +149,17 @@ namespace BackendWebAPI.Controllers
                     SN = "N/A"
                 },
             };
-            
+
             return Ok(result);
         }
-        
+
         [HttpGet("[action]")]
         public async Task<ActionResult<List<AvgPassRateResponse>>> GetMergedWeeklyPassRate()
         {
             //TODO query analisis analysis
             //LIB.GETAVG(from, to)
 
-            var result = new double[] {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7};
+            var result = new double[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 };
 
             return Ok(result);
         }
