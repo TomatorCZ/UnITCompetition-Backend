@@ -13,48 +13,44 @@ class Program
         //save
         using (var ctx = new CommonDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<CommonDbContext>(), @"DataSource = C:\Users\husak\Hackathons\InITCompetition\UnITCompetition-Backend\BackendWebAPI\UnIT.db;"))
         {
-            int id = 0;
-            int idGroup = 0;
-            foreach (var item in parsedFiles.Take(10))
+            foreach (var item in parsedFiles)
             {
+                int id = AddNewHead(item.Item1, ctx).Result;
                 Console.WriteLine(id);
-                AddNewHead(item.Item1, ctx).Wait();
                 foreach (var itemG in item.Item2)
                 {
                     itemG.Item1.HeadId = id;
-                    AddNewGroup(itemG.Item1, ctx).Wait();
+                    int idGroup = AddNewGroup(itemG.Item1, ctx).Result;
                     foreach (var itemT in itemG.Item2)
                     {
                         itemT.GroupId = idGroup;
                         AddNewTest(itemT, ctx);
                     }
-                    idGroup++;
                 }
-                id++;
             }
         }
     }
 
     public static async Task<int> AddNewHead(Head head, CommonDbContext ctx)
     {
-        var result = ctx.Heads.Add(head).Entity.Id;
+        var a = ctx.Heads.Add(head);
         await ctx.SaveChangesAsync();
-        return result;
+        return a.Entity.Id;
     }
 
     public static async Task<int> AddNewTest(Test test, CommonDbContext ctx)
     {
-        var result = ctx.Tests.Add(test).Entity.Id;
+        var result = ctx.Tests.Add(test);
         await ctx.SaveChangesAsync();
-        return result;
+        return result.Entity.Id;
     }
 
     public static async Task<int> AddNewGroup(Group group, CommonDbContext ctx)
     {
-        var result = ctx.Groups.Add(group).Entity.Id;
+        var result = ctx.Groups.Add(group);
         await ctx.SaveChangesAsync();
 
-        return result;
+        return result.Entity.Id;
     }
 
     //public static Options ParseOptions(string[] args) 
