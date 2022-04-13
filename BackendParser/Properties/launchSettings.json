@@ -2,7 +2,7 @@
   "profiles": {
     "BackendParser": {
       "commandName": "Project",
-      "commandLineArgs": "program \"C:\\Users\\husak\\Hackathons\\InITCompetition\\UnITCompetition-Backend\\BackendParser\\Data\\PG24A\\\""
+      "commandLineArgs": "program \"C:\\Users\\husak\\Hackathons\\InITCompetition\\UnITCompetition-Backend\\BackendParser\\bin\\Debug\\net6.0\\Data\\PG24A\""
     }
   }
 }

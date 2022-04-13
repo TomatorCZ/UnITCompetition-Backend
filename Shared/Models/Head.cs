@@ -1,8 +1,13 @@
-﻿namespace Shared.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Shared.Models
 {
     public enum SecurityCheckEnum { PASS, FAIL };
     public class Head
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Product_Name { get; set; }
         public string Product_Code { get; set; }

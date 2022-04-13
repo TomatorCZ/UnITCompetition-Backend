@@ -13,9 +13,9 @@ namespace ParserLib.XMLParser
     {
         public Parser() {}
 
-        public List<Tuple<Head, IList<Group>, IList<Test>>> ParseFiles(string dirPath)
+        public List<Tuple<Head, List<Tuple<Group, List<Test>>>>> ParseFiles(string dirPath)
         {
-            var result = new List<Tuple<Head, IList<Group>, IList<Test>>>();
+            var result = new List<Tuple<Head, List<Tuple<Group, List<Test>>>>>();
 
             foreach (var filePath in Directory.GetFiles(dirPath))
             {
@@ -28,7 +28,7 @@ namespace ParserLib.XMLParser
             return result;
         }
 
-        public Tuple<Head, IList<Group>, IList<Test>> ParseFile(string path)
+        public Tuple<Head, List<Tuple<Group, List<Test>>>> ParseFile(string path)
         {
             XElement document = XElement.Load(path);
 
@@ -38,18 +38,19 @@ namespace ParserLib.XMLParser
 
             Head headResult = ProcessHead(head);
 
-            IList<Group> groups = new List<Group>();
-            IList<Test> tests = new List<Test>();
+            var result2 = new List<Tuple<Group, List<Test>>>();
             foreach (var group in document.Element("test_set").Elements("group"))
             {
-                groups.Add(ProcessGroup(group));
+                var t = Tuple.Create(ProcessGroup(group), new List<Test>());
+
                 foreach (var test in group.Elements("test"))
                 {
-                    tests.Add(ProcessTest(test));
+                    t.Item2.Add(ProcessTest(test));
                 }
+                result2.Add(t);
             }
 
-            return Tuple.Create(headResult, groups, tests);
+            return Tuple.Create(headResult, result2);
         }
 
         public Head ProcessHead(XElement head) 
@@ -70,8 +71,8 @@ namespace ParserLib.XMLParser
             //result
             var resultTag = head.Element("result");
             result.Result_Value = resultTag.Attribute("value").Value == "FAIL" ? ResultTestEnum.FAIL : ResultTestEnum.PASS;
-            result.Result_FailTestName = resultTag.Attribute("fail-test-name").Value;
-            result.Result_FailGroupName = resultTag.Attribute("fail-group-name").Value;
+            result.Result_FailTestName = resultTag.Attribute("fail-test-name") == null ? "" : resultTag.Attribute("fail-test-name").Value;
+            result.Result_FailGroupName = resultTag.Attribute("fail-group-name")== null ? "" : resultTag.Attribute("fail-group-name").Value;
             //upload-state
             result.UploadState = head.Element("upload-state").Attribute("value").Value;
             //test-total-time
@@ -98,7 +99,7 @@ namespace ParserLib.XMLParser
             return result;
         }
 
-        public Test ProcessTest(XElement test) 
+        public Test ProcessTest(XElement test)
         {
             var result = new Test();
 
@@ -155,6 +156,16 @@ namespace ParserLib.XMLParser
                 check.Side = inf.Attribute("side")?.Value == "product" ? SideEnum.product : SideEnum.unittester;
 
                 result.Operations.Checks.Add(check);
+            }
+
+            result.ErrorInfo = new List<string>();
+            var err = test.Element("error-info");
+            if (err != null)
+            {
+                foreach (var inf in err.Elements("error"))
+                {
+                    result.ErrorInfo.Add(inf.Value);
+                }
             }
 
             return result;
