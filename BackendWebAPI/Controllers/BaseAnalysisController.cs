@@ -76,6 +76,8 @@ namespace BackendWebAPI.Controllers
                 },
             };
 
+            result = result.OrderBy(x => x.TestDuration).ToList();
+
             return Ok(result);
         }
         
@@ -111,7 +113,7 @@ namespace BackendWebAPI.Controllers
                     SN = "N/A"
                 },
             };
-
+            
             return Ok(result);
         }
         
