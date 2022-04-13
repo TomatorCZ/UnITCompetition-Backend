@@ -1,5 +1,6 @@
 ﻿using ParserLib.XMLParser;
 using ParserLib;
+using Shared.Models;
 
 class Program
 {
@@ -7,6 +8,11 @@ class Program
     {
         Parser parser = new Parser();
         var parsedFiles = parser.ParseFiles(args[1]);
+
+        using (var ctx = new CommonDbContext(null))
+        { 
+        
+        }
     }
 
     //public static Options ParseOptions(string[] args) 
