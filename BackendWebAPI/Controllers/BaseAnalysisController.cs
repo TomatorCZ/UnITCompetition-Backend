@@ -229,6 +229,27 @@ namespace BackendWebAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<AllertResponse>>> Allert()
+        {
+            var result = new List<AllertResponse>();
+            result.Add(new AllertResponse()
+            {
+                ProductName = "IL4 PG24A",
+                Severenity = 1,
+                Reason = "Tests duration are slowed by 25% in this week."
+            });
+
+            result.Add(new AllertResponse()
+            {
+                ProductName = "IL4 PG24D",
+                Severenity = 2,
+                Reason = "Tests failures increased by 30 % in this week."
+            });
+
+            return Ok(result);
+        }
         
         [HttpGet("[action]")]
         public async Task<ActionResult<List<WeeklyStatsResponse>>> GetWeeklyStats()
